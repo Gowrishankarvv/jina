@@ -24,6 +24,7 @@ from ..enums import (
     FlowInspectType,
     GatewayProtocolType,
     InfrastructureType,
+    PollingType,
 )
 from ..excepts import (
     FlowTopologyError,
@@ -788,6 +789,13 @@ class Flow(PostMixin, JAMLCompatible, ExitStack, metaclass=FlowType):
 
         args.k8s_namespace = self.args.name
         args.noblock_on_start = True
+
+        # We assume that this is used in a search Flow if replicas are used
+        # Thus the polling type should be all
+        # But dont override any user provided polling
+        if args.replicas > 1 and 'polling' not in kwargs:
+            args.polling = PollingType.ALL
+
         op_flow._pod_nodes[pod_name] = PodFactory.build_pod(
             args, needs, self.args.infrastructure
         )
