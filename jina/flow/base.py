@@ -119,8 +119,7 @@ class Flow(PostMixin, JAMLCompatible, ExitStack, metaclass=FlowType):
         host: Optional[str] = '0.0.0.0',
         https: Optional[bool] = False,
         port: Optional[int] = None,
-        prefetch: Optional[int] = 50,
-        prefetch_on_recv: Optional[int] = 1,
+        prefetch: Optional[int] = 1,
         protocol: Optional[str] = 'GRPC',
         proxy: Optional[bool] = False,
         **kwargs,
@@ -132,7 +131,6 @@ class Flow(PostMixin, JAMLCompatible, ExitStack, metaclass=FlowType):
         :param https: If set, connect to gateway using https
         :param port: The port of the Gateway, which the client should connect to.
         :param prefetch: The number of pre-fetched requests from the client
-        :param prefetch_on_recv: The number of additional requests to fetch on every receive
         :param protocol: Communication protocol between server and client.
         :param proxy: If set, respect the http_proxy and https_proxy environment variables. otherwise, it will unset these proxy variables before start. gRPC seems to prefer no proxy
 
@@ -174,8 +172,7 @@ class Flow(PostMixin, JAMLCompatible, ExitStack, metaclass=FlowType):
         port_expose: Optional[int] = None,
         port_in: Optional[int] = None,
         port_out: Optional[int] = None,
-        prefetch: Optional[int] = 50,
-        prefetch_on_recv: Optional[int] = 1,
+        prefetch: Optional[int] = 1,
         protocol: Optional[str] = 'GRPC',
         proxy: Optional[bool] = False,
         py_modules: Optional[List[str]] = None,
@@ -251,7 +248,6 @@ class Flow(PostMixin, JAMLCompatible, ExitStack, metaclass=FlowType):
         :param port_in: The port for input data, default a random port between [49152, 65535]
         :param port_out: The port for output data, default a random port between [49152, 65535]
         :param prefetch: The number of pre-fetched requests from the client
-        :param prefetch_on_recv: The number of additional requests to fetch on every receive
         :param protocol: Communication protocol between server and client.
         :param proxy: If set, respect the http_proxy and https_proxy environment variables. otherwise, it will unset these proxy variables before start. gRPC seems to prefer no proxy
         :param py_modules: The customized python modules need to be imported before loading the executor
