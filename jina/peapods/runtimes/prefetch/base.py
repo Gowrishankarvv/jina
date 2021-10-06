@@ -3,7 +3,6 @@ import asyncio
 from abc import ABC, abstractmethod
 from typing import AsyncGenerator, List, Union, TYPE_CHECKING
 
-from ...grpc import Grpclet
 from ....helper import typename
 from ....logging.logger import JinaLogger
 from ....types.message import Message
@@ -11,9 +10,10 @@ from ....types.message import Message
 __all__ = ['BasePrefetcher']
 
 if TYPE_CHECKING:
+    from ...grpc import Grpclet
     from ...zmq import AsyncZmqlet
     from ....types.request import Request
-    from ....clients.base.http import HTTPClientlet
+    from ....clients.base.helper import HTTPClientlet, WebsocketClientlet
 
 
 class BasePrefetcher(ABC):
@@ -22,7 +22,7 @@ class BasePrefetcher(ABC):
     def __init__(
         self,
         args: argparse.Namespace,
-        iolet: Union['AsyncZmqlet', 'Grpclet', 'HTTPClientlet'],
+        iolet: Union['AsyncZmqlet', 'Grpclet', 'HTTPClientlet', 'WebsocketClientlet'],
     ):
         """
         :param args: args from CLI
@@ -39,14 +39,6 @@ class BasePrefetcher(ABC):
 
         .. # noqa: DAR202
         :return: asyncio Task
-        """
-        ...
-
-    @abstractmethod
-    async def receive(self):
-        """Implement `receive` logic for prefetcher
-
-        .. # noqa: DAR202
         """
         ...
 

@@ -67,14 +67,13 @@ def get_fastapi_app(args: 'argparse.Namespace', logger: 'JinaLogger'):
         async def req_iter():
             while True:
                 data = await websocket.receive_bytes()
-                if data == bytes(True):
-                    break
                 yield Request(data)
 
         try:
             async for msg in prefetcher.send(request_iterator=req_iter()):
                 await websocket.send_bytes(msg.binary_str())
         except WebSocketDisconnect:
+            logger.debug('Client successfully disconnected from server')
             manager.disconnect(websocket)
 
     return app
