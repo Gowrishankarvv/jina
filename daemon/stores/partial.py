@@ -130,8 +130,8 @@ class PartialFlowStore(PartialStore):
                         + list(GATEWAY_RUNTIME_DICT.values())
                     ):
                         pod.args.runs_in_docker = False
-                        for replica_args in pod.replicas_args:
-                            replica_args.runs_in_docker = False
+                        for shards_args in pod.shards_args:
+                            shards_args.runs_in_docker = False
                         if port_mapping:
                             # Ports for Head & Tail Peas in a CompoundPod set here.
                             # This is specifically needed as `save_config` doesn't save `port_out` for a HeadPea
