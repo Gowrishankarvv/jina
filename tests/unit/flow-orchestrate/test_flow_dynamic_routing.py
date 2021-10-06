@@ -27,7 +27,7 @@ class MergeExecutor(Executor):
 
 @pytest.mark.parametrize(
     'use_grpc',
-    [True, False],
+    [True],
 )
 def test_expected_messages_routing(use_grpc):
     f = (

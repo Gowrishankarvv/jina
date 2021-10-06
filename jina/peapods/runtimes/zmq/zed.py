@@ -188,6 +188,7 @@ class ZEDRuntime(ZMQRuntime):
 
             # when no available dealer, pause the pollin from upstream
             if not self._idle_dealer_ids:
+                self.logger.debug('pause pollin')
                 self._zmqstreamlet.pause_pollin()
             self.logger.debug(
                 f'using route, set receiver_id: {msg.envelope.receiver_id}'
@@ -247,6 +248,7 @@ class ZEDRuntime(ZMQRuntime):
         try:
             # notice how executor related exceptions are handled here
             # generally unless executor throws an OSError, the exception are caught and solved inplace
+            self.logger.debug(f'got message {msg}')
             processed_msg = self._callback(msg)
             # dont sent responses for CANCEL and IDLE control requests
             if msg.is_data_request or msg.request.command not in ['CANCEL', 'IDLE']:

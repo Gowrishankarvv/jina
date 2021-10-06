@@ -346,6 +346,10 @@ class Zmqlet:
                 routing_table.active_target_pod.target_identity
             )
 
+            self.logger.debug(
+                f'send mesage dyanmic to {routing_table.active_target_pod.target_identity}'
+            )
+
             self._send_message_via(out_sock, new_message)
 
     def send_message(self, msg: 'Message'):
