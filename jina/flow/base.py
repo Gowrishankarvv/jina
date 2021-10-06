@@ -790,6 +790,7 @@ class Flow(PostMixin, JAMLCompatible, ExitStack, metaclass=FlowType):
         args.k8s_namespace = self.args.name
         args.noblock_on_start = True
 
+        # BACKWARDS COMPATIBILITY:
         # We assume that this is used in a search Flow if replicas are used
         # Thus the polling type should be all
         # But dont override any user provided polling
