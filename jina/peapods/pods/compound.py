@@ -9,7 +9,7 @@ from .. import Pea
 from .. import Pod
 from ..networking import get_connect_host
 from ... import helper
-from ...enums import SocketType, SchedulerType
+from ...enums import SocketType, SchedulerType, PollingType
 from ...helper import random_identity
 
 
@@ -38,6 +38,7 @@ class CompoundPod(BasePod, ExitStack):
         # we will see how to have `CompoundPods` in remote later when we add tests for it
         self.is_head_router = True
         self.is_tail_router = True
+        self.args.polling = PollingType.ALL
         self.head_args = BasePod._copy_to_head_args(args, args.polling)
         self.tail_args = BasePod._copy_to_tail_args(self.args, self.args.polling)
         self.shards = []  # type: List['Pod']
