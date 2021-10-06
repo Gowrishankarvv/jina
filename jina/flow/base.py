@@ -1776,7 +1776,7 @@ class Flow(PostMixin, JAMLCompatible, ExitStack, metaclass=FlowType):
 
     def rolling_update(self, pod_name: str, dump_path: Optional[str] = None):
         """
-        Reload Pods sequentially - only used for compound pods.
+        Reload all replicas of a pod sequentially
 
         :param dump_path: the path from which to read the dump data
         :param pod_name: pod to update
@@ -1790,13 +1790,7 @@ class Flow(PostMixin, JAMLCompatible, ExitStack, metaclass=FlowType):
             FutureWarning,
         )
 
-        compound_pod = self._pod_nodes[pod_name]
-        if isinstance(compound_pod, CompoundPod):
-            compound_pod.rolling_update(dump_path)
-        else:
-            raise ValueError(
-                f'The BasePod {pod_name} is not a CompoundPod and does not support updating'
-            )
+        self._pod_nodes[pod_name].rolling_update(dump_path)
 
     @property
     def client_args(self) -> argparse.Namespace:
