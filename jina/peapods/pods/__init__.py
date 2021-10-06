@@ -609,7 +609,15 @@ class Pod(BasePod, ExitFIFO):
             _args.port_ctrl = helper.random_port()
 
             _args.socket_out = SocketType.PUSH_CONNECT
-            _args.socket_in = SocketType.DEALER_CONNECT
+
+            if args.scheduling == SchedulerType.ROUND_ROBIN:
+                _args.socket_in = SocketType.PULL_CONNECT
+            elif args.scheduling == SchedulerType.LOAD_BALANCE:
+                _args.socket_in = SocketType.DEALER_CONNECT
+            else:
+                raise ValueError(
+                    f'{args.scheduling} is not supported as a SchedulerType!'
+                )
 
             if head_args:
                 _args.host_in = get_connect_host(
