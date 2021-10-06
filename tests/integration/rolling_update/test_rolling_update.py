@@ -50,7 +50,9 @@ def test_normal(docs):
 
     def handle_search_result(resp):
         for doc in resp.data.docs:
-            doc_id_path[int(doc.id)] = (doc.tags['replica'], doc.tags['shard'])
+            if int(doc.id) not in doc_id_path:
+                doc_id_path[int(doc.id)] = []
+            doc_id_path[int(doc.id)].append((doc.tags['replica'], doc.tags['shard']))
 
     flow = Flow().add(
         name='executor1',
@@ -63,17 +65,14 @@ def test_normal(docs):
 
     assert len(doc_id_path.keys()) == len(docs)
 
-    num_used_replicas = len(set(map(lambda x: x[0], doc_id_path.values())))
-    assert num_used_replicas == NUM_REPLICAS
+    replica_shards = [
+        tag_item for tag_items in doc_id_path.values() for tag_item in tag_items
+    ]
+    replicas = [r for r, s in replica_shards]
+    shards = [s for r, s in replica_shards]
 
-    shards = collections.defaultdict(list)
-    for replica, shard in doc_id_path.values():
-        shards[replica].append(shard)
-
-    assert len(shards.keys()) == NUM_REPLICAS
-
-    for shard_list in shards.values():
-        assert len(set(shard_list)) == NUM_SHARDS
+    assert len(set(replicas)) == NUM_REPLICAS
+    assert len(set(shards)) == NUM_SHARDS
 
 
 @pytest.mark.timeout(60)
